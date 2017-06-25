@@ -110,7 +110,7 @@ io.on('disconnection', function(socket) {
 });
 
 // Serve static content like index.html and css files, from the folder called public
-app.use(express.static("public"));
+app.use(express.static("client/public"));
 
 // Start the server
 http.listen(serverPort, function(){

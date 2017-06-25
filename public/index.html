@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400" rel="stylesheet">
+    <title>Smart Timer - Prototype</title>
+</head>
+<body>
+    <div class="container">
+        <!--<h1>Smart Timer</h1>-->
+<!-- 
+  *** TODO LIST ***
+
+  - Add ability to set the timer (hh:mm:ss)
+  - Implement start, pause, stop and clear timer controls
+     - Start & stop can be same button, just change the text according to the current state
+     - Make sure all time controls are reflected on all devices
+  - Keep timer state across refreshes
+  - Do something when timer ends
+  - Add a circle around the timer which goes round slowly as the timer counts down
+     - https://lh4.ggpht.com/-hOjcEUUxjUKT938jnAHidJnazqVgIUAEvjfbGZEhdeN-EsM3ifhH0R-M7msFVH-js8=w300
+-->
+        <div class="timer" id="timer">
+          <span class="value" id="hours">0</span><span class="unit">H</span>
+          <span class="value" id="minutes">00</span><span class="unit">M</span>
+          <span class="value" id="seconds">00</span><span class="unit">S</span>
+        </div>
+
+        <div class="controls">
+          <button id="add-minute">Add One Minute</button>
+          <button id="start-stop">Start</button>
+          <button id="clear">Clear</button>
+        </div>
+
+        <div class="users">
+            <h2>Users connected: 
+              <span id="users">...</span>
+            </h2>
+        </div>
+    </div>
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+<script>
+  $(function () {
+
+    // Utility functions
+    function format(n){
+      return n > 9 ? "" + n: "0" + n;
+    }
+
+    var socket = io();
+
+    // On connecting, get the timer value in case it's already in progress
+    // socket.on('connection', function() {
+      
+    // })
+
+    // Adding time from the client
+    $('button#add-minute').click(function(){
+      socket.emit('timer add minutes', "1");
+    });
+
+    // Starting & stopping the timer
+    $('button#start-stop').click(function(){
+      socket.emit('timer start-stop');
+    });
+
+    // Clearing the timer
+    $('button#clear').click(function(){
+      socket.emit('timer clear');
+    });
+
+    // Receiving a time update. Set all the values to whatever comes through the pipes
+    socket.on('timer update', function(timer){
+      console.log('Received timer update');
+
+      var hours = $('span#hours');
+      var minutes = $('span#minutes');
+      var seconds = $('span#seconds');
+
+      hours.text(format(timer.hours));
+      minutes.text(format(timer.minutes));
+      seconds.text(format(timer.seconds));
+    });
+
+    // This event is emitted when a user connects or updated and we update the total user count
+    socket.on('users update', function(value) {
+      var userCount = $('span#users');
+      userCount.text(value);
+    })
+  });
+</script>
+</html>

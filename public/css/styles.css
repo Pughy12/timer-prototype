@@ -1,0 +1,43 @@
+body {
+    background-color: #1f3751;
+    font-family: 'Josefin Sans';
+    font-weight: 300;
+}
+
+.container {
+    margin: 0 auto;
+    margin-top: 150px;
+    max-width: 420px;
+    text-align: center;
+}
+
+.timer .value {
+    color: #39c;
+    font-size: 64px;
+}
+
+.timer .unit {
+    color: #ddd;
+    font-size: 20px;
+}
+
+div.controls button {
+    background-color:rgba(0,0,0,0);
+    border: 1px solid white;
+    border-radius: 3px;
+    color: white;
+    margin: 16px;
+    outline: none;
+    padding: 15px 20px;
+}
+
+div.controls button:hover {
+    background-color: rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+div.users {
+    color: white;
+    font-size: 12px;
+    margin-top: 50px;
+}
